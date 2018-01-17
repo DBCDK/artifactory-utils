@@ -38,7 +38,7 @@ def get_tags_list(base_url, repo_key, image_name, headers):
     url = "{}/api/docker/{}/v2/{}/tags/list".format(base_url, repo_key,
         image_name)
     tags_page = open_page(url, headers)
-    tags_json = json.load(tags_page)
+    tags_json = json.loads(tags_page.read().decode("utf8"))
     if "tags" not in tags_json:
         raise TagsListerException("key \"tags\" not found in reponse json:\n{}"
             .format(json.dumps(tags_json, indent=4, sort_keys=True)))
