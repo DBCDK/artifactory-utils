@@ -53,6 +53,10 @@ def main = {
     def json = parseJson(getTagsList(baseUrl, repoTuple.get(0),
         repoTuple.get(1), auth))
     def list = json.tags.findAll{it.startsWith(tagPrefix)}
+    if(list.any{!it.isInteger()}) {
+        // return list unsorted if not all values are integers
+        return list
+    }
     list = list.collect{Integer.valueOf(it.substring(tagPrefix.size()))}
         .sort{a, b -> b - a}.collect{it = tagPrefix + it}
     return list
