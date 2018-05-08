@@ -4,6 +4,16 @@
 # See license text at https://opensource.dbc.dk/licenses/gpl-3.0
 
 import argparse
+import os
+
+class PathArg(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        paths = [values] if self.nargs is None else values
+        for path in paths:
+            if not os.path.exists(path):
+                raise argparse.ArgumentError(self, "not a valid path: {}"
+                    .format(path))
+        setattr(namespace, self.dest, paths)
 
 def setup_args():
     parser = argparse.ArgumentParser()
