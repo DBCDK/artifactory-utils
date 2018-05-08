@@ -52,6 +52,8 @@ def split_repo_name(repo_name):
     try:
         repository, image_name = repo_name.split("/")
         repo_key = repository.split(".")[0]
+        if repo_key == "docker":
+            repo_key = "docker-dbc"
         return (repo_key, image_name)
     except ValueError as e:
         raise TagsListerException("error getting repository and image name, "
