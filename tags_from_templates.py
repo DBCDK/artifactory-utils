@@ -63,9 +63,10 @@ def get_tag(path, args):
     tags = docker_tags_lister.get_tags_list(args.base_url, repo_key,
         image_name, headers)
     tag = docker_tags_lister.get_tag_max(tags, args.tag_prefix)
-    return "{}={}".format(variable, tag)
+    return variable, tag
 
 def traverse_directory(path, args):
+    tag_dict = {}
     for root, _, files in os.walk(path):
         for filename in files:
             f_path = os.path.join(root, filename)
@@ -75,10 +76,14 @@ def traverse_directory(path, args):
                     args.include)):
                 continue
             try:
-                args.output.write("{}\n".format(get_tag(f_path, args)))
+                variable, tag = get_tag(f_path, args)
+                if variable not in tag_dict:
+                    tag_dict[variable] = tag
             except (docker_tags_lister.TagsListerException,
                     NoImageFoundException, NoTagVariableFoundException) as e:
                 print(e, file=sys.stderr)
+    for variable, tag in tag_dict.items():
+        args.output.write("{}={}\n".format(variable, tag))
 
 def main():
     args = setup_args()
@@ -89,7 +94,8 @@ def main():
             traverse_directory(path, args)
         elif os.path.isfile(path):
             try:
-                args.output.write("{}\n".format(get_tag(path, args)))
+                variable, tag = get_tag(path, args)
+                args.output.write("{}={}\n".format(variable, tag))
             except (docker_tags_lister.TagsListerException,
                     NoImageFoundException, NoTagVariableFoundException) as e:
                 print(e, file=sys.stderr)
