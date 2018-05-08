@@ -3,26 +3,21 @@
 # Copyright Dansk Bibliotekscenter a/s. Licensed under GPLv3
 # See license text at https://opensource.dbc.dk/licenses/gpl-3.0
 
-import argparse
 import base64
 import getpass
 import json
 import sys
 import urllib.request
 
+import base_args
+
 class TagsListerException(Exception):
     pass
 
 def setup_args():
-    parser = argparse.ArgumentParser()
+    parser = base_args.setup_args()
     parser.add_argument("repository", help="docker repository and image "
         "name, in the form \"docker-io.dbc.dk/io-react.\"")
-    parser.add_argument("--base-url",
-        default="https://artifactory.dbc.dk/artifactory")
-    parser.add_argument("-u", "--user", required=True)
-    parser.add_argument("-p", "--password")
-    parser.add_argument("--tag-prefix", default="",
-        help="filter docker tags with this prefix")
     return parser.parse_args()
 
 def open_page(url, headers={}):
