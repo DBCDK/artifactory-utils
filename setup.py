@@ -16,5 +16,6 @@ setup(name="artifactory-utils",
             "tags-from-templates = artifactory_utils.tags_from_templates:main",
             "docker-tags-lister = artifactory_utils.docker_tags_lister:main",
             "remote-tag = artifactory_utils.remote_tag:main"
-        ]}
+        ]},
+    install_requires=["requests==2.19.1"]
     )

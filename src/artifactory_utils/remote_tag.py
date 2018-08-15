@@ -1,6 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# -*- mode: python -*-
+#!/usr/bin/env python3
+
+# Copyright Dansk Bibliotekscenter a/s. Licensed under GPLv3
+# See license text at https://opensource.dbc.dk/licenses/gpl-3.0
 
 import argparse
 import os
@@ -41,18 +42,21 @@ def http_put_manifest(url, manifest, username, password):
 def trim_registry(registry):
     return registry.split('.')[0]
 
-if __name__ == "__main__":
+def main():
     args = parse_args()
     (registry, repository_name) = args.repository_name.split('/')
 
-    print "tagging %s/%s:%s as %s/%s:%s" % (registry, repository_name, args.src_tag, registry, repository_name,
-                                            args.target_tag),
+    print("tagging %s/%s:%s as %s/%s:%s" % (registry, repository_name, args.src_tag, registry, repository_name,
+                                            args.target_tag))
 
     manifest = http_get_manifest('/'.join([args.registry_baseurl, 'api', 'docker', trim_registry(registry), 'v2',
                                            repository_name, 'manifests', args.src_tag]), args.username, args.password)
 
-    print "[%s]" % (http_put_manifest('/'.join([args.registry_baseurl, 'api', 'docker', trim_registry(registry), 'v2',
+    print("[%s]" % (http_put_manifest('/'.join([args.registry_baseurl, 'api', 'docker', trim_registry(registry), 'v2',
                                                 repository_name, 'manifests', args.target_tag]), manifest,
-                                      args.username, args.password))
+                                      args.username, args.password)))
 
     sys.exit(os.EX_OK)
+
+if __name__ == "__main__":
+    main()
