@@ -9,7 +9,7 @@ import json
 import sys
 import urllib.request
 
-import base_args
+from . import base_args
 
 class TagsListerException(Exception):
     pass
