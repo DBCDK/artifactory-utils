@@ -10,8 +10,8 @@ import os
 import re
 import sys
 
-import base_args
-import docker_tags_lister
+from . import base_args
+from . import docker_tags_lister
 
 json_image_key_re = re.compile("[\"\']image[\"\']:\s*[\"\']([^\"\']+)[\"\']")
 yaml_image_key_re = re.compile("image:\s*(.+)")
