@@ -41,7 +41,7 @@ def get_tags_list(base_url, repo_key, image_name, headers):
 
 def get_tag_max(tags, prefix=""):
     try:
-        filtered_tags = [t for t in tags if t.startswith(prefix)]
+        filtered_tags = [t for t in tags if t.startswith(prefix) and t[len(prefix):].isnumeric()]
         m = max(int(t[len(prefix):]) for t in filtered_tags)
         return prefix + str(m)
     except ValueError as e:
